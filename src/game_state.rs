@@ -174,6 +174,25 @@ impl State for GameState {
         );
         player_one_score.draw(ctx, Vec2::new(PADDING, PADDING + FONT_SIZE_MD * 2.0));
 
+        let mut player_two_text = Text::new("Player 2", self.font_md.clone());
+        let player_two_text_width = player_two_text.get_bounds(ctx).unwrap().width;
+
+        player_two_text.draw(
+            ctx,
+            Vec2::new(WINDOW_WIDTH - PADDING - player_two_text_width, PADDING)
+        );
+
+        let mut player_two_score = Text::new(
+            "Score: ".to_owned() + &self.player2.score.to_string(),
+            self.font_sm.clone()
+        );
+        let player_two_score_width = player_two_score.get_bounds(ctx).unwrap().width;
+
+        player_two_score.draw(
+            ctx,
+            Vec2::new(WINDOW_WIDTH - PADDING - player_two_score_width, PADDING + FONT_SIZE_MD * 2.0)
+        );
+
         title_text.draw(
             ctx,
             Vec2::new(WINDOW_WIDTH / 2.0 - (title_text_width as f32) / 2.0, PADDING)
