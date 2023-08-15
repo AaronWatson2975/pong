@@ -1,4 +1,4 @@
-pub const BALL_ACC: f32 = 0.1;
+pub const BALL_ACC: f32 = 0.25;
 pub const BALL_SPEED: f32 = 6.0;
 pub const FONT_SIZE_SM: f32 = 16.0;
 pub const FONT_SIZE_MD: f32 = 24.0;
