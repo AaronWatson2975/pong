@@ -1,10 +1,11 @@
+use std::cmp::{ min, max };
 use tetra::Context;
-use tetra::input::{self, Key};
-use tetra::graphics::{self, Texture, Color};
+use tetra::input::{ self, Key };
+use tetra::graphics::{ self, Texture, Color };
 use tetra::State;
 use tetra::math::Vec2;
 use crate::entity::Entity;
-use crate::constants::{PADDLE_SPEED, WINDOW_WIDTH, WINDOW_HEIGHT, PADDING, BALL_SPEED};
+use crate::constants::{ PADDLE_SPEED, WINDOW_WIDTH, WINDOW_HEIGHT, PADDING, BALL_SPEED };
 
 pub struct GameState {
     player1: Entity,
@@ -17,18 +18,21 @@ impl GameState {
     pub fn new(ctx: &mut Context) -> tetra::Result<GameState> {
         let ball_texture = Texture::new(ctx, "./src/resources/ball.png")?;
         let ball_position = Vec2::new(
-            WINDOW_WIDTH / 2.0 - ball_texture.width() as f32 / 2.0,
-            WINDOW_HEIGHT / 2.0 - ball_texture.height() as f32 / 2.0
+            WINDOW_WIDTH / 2.0 - (ball_texture.width() as f32) / 2.0,
+            WINDOW_HEIGHT / 2.0 - (ball_texture.height() as f32) / 2.0
         );
 
         let player1_texture = Texture::new(ctx, "./src/resources/player1.png")?;
-        let player1_position = 
-            Vec2::new(PADDING, (WINDOW_HEIGHT - player1_texture.height() as f32) / 2.0);
+        let player1_position = Vec2::new(
+            PADDING,
+            (WINDOW_HEIGHT - (player1_texture.height() as f32)) / 2.0
+        );
 
         let player2_texture = Texture::new(ctx, "./src/resources/player2.png")?;
-        let player2_position = 
-            Vec2::new((WINDOW_WIDTH - player2_texture.width() as f32 - PADDING) as f32, (WINDOW_HEIGHT - player2_texture.height() as f32) / 2.0);
-        
+        let player2_position = Vec2::new(
+            (WINDOW_WIDTH - (player2_texture.width() as f32) - PADDING) as f32,
+            (WINDOW_HEIGHT - (player2_texture.height() as f32)) / 2.0
+        );
 
         let ball_velocity = Vec2::new(-BALL_SPEED, 0.0);
 
@@ -39,15 +43,17 @@ impl GameState {
             player2: Entity::new(player2_texture, player2_position),
             ball: Entity::with_velocity(ball_texture, ball_position, ball_velocity),
             background,
-         })
+        })
     }
 }
 
 impl State for GameState {
     fn update(&mut self, ctx: &mut Context) -> tetra::Result {
         if input::is_key_down(ctx, Key::W) {
-
-            self.player1.position.y -= PADDLE_SPEED;
+            self.player1.position.y = max(
+                (self.player1.position.y as i32) - (PADDLE_SPEED as i32),
+                PADDING as i32
+            ) as f32;
         }
 
         if input::is_key_down(ctx, Key::S) {
@@ -55,7 +61,6 @@ impl State for GameState {
         }
 
         if input::is_key_down(ctx, Key::Up) {
-
             self.player2.position.y -= PADDLE_SPEED;
         }
 

@@ -1,4 +1,4 @@
-use tetra::graphics::{Texture, Rectangle};
+use tetra::graphics::{ Texture, Rectangle };
 use tetra::math::Vec2;
 
 pub struct Entity {
@@ -18,12 +18,7 @@ impl Entity {
     }
 
     pub fn bounds(&self) -> Rectangle {
-        Rectangle::new(
-            self.position.x,
-            self.position.y,
-            self.width(),
-            self.height()
-        )
+        Rectangle::new(self.position.x, self.position.y, self.width(), self.height())
     }
 
     pub fn new(texture: Texture, position: Vec2<f32>) -> Entity {
