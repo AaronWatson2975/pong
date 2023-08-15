@@ -5,6 +5,21 @@ use tetra::math::Vec2;
 use tetra::window;
 use tetra::{Context, ContextBuilder, State};
 
+/**
+ * TODO
+ * 
+ * Break out into multi file
+ * Limit paddles from ceiling and floor
+ * Add Score after ball leaves play area
+ * Display score
+ * Reset 
+ * Make Ball direction random to start
+ * Add Y reflection for ball
+ * Skin with modern UI
+ * Make AI
+ * 
+ */
+
 const BALL_SPEED: f32 = 5.0;
 const PADDLE_SPEED: f32 = 8.0;
 const WINDOW_WIDTH: f32 = 640.0;
