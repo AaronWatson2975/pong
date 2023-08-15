@@ -3,7 +3,8 @@
 This repository contains a Pong game, built with simplicity in mind, and inspired by the visual aesthetics of the Tron universe. The game is developed using the Rust programming language.
 
 
-![pong_mockup](https://github.com/AaronWatson2975/pong/assets/36612616/9f2bd923-4da9-4eba-b93f-abd3d6a2ccca)
+<img width="1590" alt="Screenshot 2023-08-15 at 12 45 54 AM" src="https://github.com/AaronWatson2975/pong/assets/36612616/c563b601-0bdf-40b8-9569-52a16b037607">
+
 
 
 # Installation
