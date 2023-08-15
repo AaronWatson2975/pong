@@ -6,12 +6,7 @@ mod constants;
 /**
  * TODO
  *
- * Add Score after ball leaves play area
  * Display score
- * Reset
- * Make Ball direction random to start
- * Add Y reflection for ball
- * Skin with modern UI
  * Make AI
  *
  */

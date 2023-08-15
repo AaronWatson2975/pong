@@ -2,6 +2,7 @@ use std::cmp::{ min, max };
 use tetra::Context;
 use tetra::input::{ self, Key };
 use tetra::graphics::{ self, Texture, Color };
+use tetra::graphics::text::{ Font, Text };
 use tetra::State;
 use tetra::math::Vec2;
 use crate::entity::Entity;
@@ -13,6 +14,9 @@ use crate::constants::{
     PADDLE_SPIN,
     WINDOW_WIDTH,
     WINDOW_HEIGHT,
+    FONT_SIZE_LG,
+    FONT_SIZE_MD,
+    FONT_SIZE_SM,
 };
 
 pub struct GameState {
@@ -20,10 +24,17 @@ pub struct GameState {
     player2: Entity,
     ball: Entity,
     background: Texture,
+    font_sm: Font,
+    font_md: Font,
+    font_lg: Font,
 }
 
 impl GameState {
     pub fn new(ctx: &mut Context) -> tetra::Result<GameState> {
+        let font_lg = Font::vector(ctx, "./src/resources/tron.ttf", FONT_SIZE_LG)?;
+        let font_md = Font::vector(ctx, "./src/resources/tron.ttf", FONT_SIZE_MD)?;
+        let font_sm = Font::vector(ctx, "./src/resources/tron.ttf", FONT_SIZE_SM)?;
+
         let ball_texture = Texture::new(ctx, "./src/resources/ball.png")?;
         let ball_position = Vec2::new(
             WINDOW_WIDTH / 2.0 - (ball_texture.width() as f32) / 2.0,
@@ -51,6 +62,9 @@ impl GameState {
             player2: Entity::new(player2_texture, player2_position),
             ball: Entity::with_velocity(ball_texture, ball_position, ball_velocity),
             background,
+            font_lg,
+            font_md,
+            font_sm,
         })
     }
 }
@@ -138,9 +152,32 @@ impl State for GameState {
     fn draw(&mut self, ctx: &mut Context) -> tetra::Result {
         graphics::clear(ctx, Color::rgb(0.392, 0.584, 0.929));
         self.background.draw(ctx, Vec2::zero());
+
+        let mut title_text = Text::new("Pong", self.font_lg.clone());
+        let title_text_width = title_text.get_bounds(ctx).unwrap().width;
+
+        title_text.draw(
+            ctx,
+            Vec2::new(WINDOW_WIDTH / 2.0 - (title_text_width as f32) / 2.0, PADDING)
+        );
+
         self.player1.texture.draw(ctx, self.player1.position);
         self.player2.texture.draw(ctx, self.player2.position);
         self.ball.texture.draw(ctx, self.ball.position);
+
+        let mut player_one_text = Text::new("Player 1", self.font_md.clone());
+        player_one_text.draw(ctx, Vec2::new(PADDING, PADDING));
+
+        let mut player_one_score = Text::new(
+            "Score: ".to_owned() + &self.player1.score.to_string(),
+            self.font_sm.clone()
+        );
+        player_one_score.draw(ctx, Vec2::new(PADDING, PADDING + FONT_SIZE_MD * 2.0));
+
+        title_text.draw(
+            ctx,
+            Vec2::new(WINDOW_WIDTH / 2.0 - (title_text_width as f32) / 2.0, PADDING)
+        );
 
         Ok(())
     }
