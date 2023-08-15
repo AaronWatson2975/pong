@@ -2,10 +2,7 @@
 
 This repository contains a Pong game, built with simplicity in mind, and inspired by the visual aesthetics of the Tron universe. The game is developed using the Rust programming language.
 
-
 <img width="1590" alt="Screenshot 2023-08-15 at 12 45 54 AM" src="https://github.com/AaronWatson2975/pong/assets/36612616/c563b601-0bdf-40b8-9569-52a16b037607">
-
-
 
 # Installation
 
@@ -28,5 +25,23 @@ Execution of the game is straightforward and can be triggered through one simple
 ```
 cargo run
 ```
+
+# Controls
+
+Here is a list of controls you can use while playing the game. These instructions assume that two players are going head-to-head in a fiery game of pong.
+
+## Player 1
+
+Player 1's controls consist of the following:
+
+- `W` key: Use this to move the paddle up on the screen.
+- `S` key: Use this to move the paddle down the screen.
+
+## Player 2
+
+Player 2's controls are:
+
+- `Up Arrow` key: This will allow you to move the paddle upwards.
+- `Down Arrow` key: This will enable you to move the paddle downwards.
 
 Enjoy playing your very own Tron-themed Pong game!
