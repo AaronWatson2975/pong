@@ -51,21 +51,30 @@ impl State for GameState {
     fn update(&mut self, ctx: &mut Context) -> tetra::Result {
         if input::is_key_down(ctx, Key::W) {
             self.player1.position.y = max(
-                (self.player1.position.y as i32) - (PADDLE_SPEED as i32),
+                (self.player1.position.y - PADDLE_SPEED) as i32,
                 PADDING as i32
             ) as f32;
         }
 
         if input::is_key_down(ctx, Key::S) {
-            self.player1.position.y += PADDLE_SPEED;
+            self.player1.position.y = min(
+                (self.player1.position.y + PADDLE_SPEED) as i32,
+                ((WINDOW_HEIGHT - PADDING) as i32) - self.player1.texture.height()
+            ) as f32;
         }
 
         if input::is_key_down(ctx, Key::Up) {
-            self.player2.position.y -= PADDLE_SPEED;
+            self.player2.position.y = max(
+                (self.player2.position.y - PADDLE_SPEED) as i32,
+                PADDING as i32
+            ) as f32;
         }
 
         if input::is_key_down(ctx, Key::Down) {
-            self.player2.position.y += PADDLE_SPEED;
+            self.player2.position.y = min(
+                (self.player2.position.y + PADDLE_SPEED) as i32,
+                ((WINDOW_HEIGHT - PADDING) as i32) - self.player2.texture.height()
+            ) as f32;
         }
 
         self.ball.position += self.ball.velocity;
@@ -90,8 +99,6 @@ impl State for GameState {
     }
 
     fn draw(&mut self, ctx: &mut Context) -> tetra::Result {
-        // let font = Font::new(ctx, "./src/resources/tron.ttf")?;
-        // let text = Text::new("Hello, world!", font);
         graphics::clear(ctx, Color::rgb(0.392, 0.584, 0.929));
         self.background.draw(ctx, Vec2::zero());
         self.player1.texture.draw(ctx, self.player1.position);

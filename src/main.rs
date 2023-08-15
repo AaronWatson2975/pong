@@ -6,7 +6,6 @@ mod constants;
 /**
  * TODO
  *
- * Limit paddles from ceiling and floor
  * Add Score after ball leaves play area
  * Display score
  * Reset
