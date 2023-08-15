@@ -93,6 +93,7 @@ impl State for GameState {
 
         if paddle_hit.is_some() {
             self.ball.velocity.x = -self.ball.velocity.x;
+            self.ball.velocity *= 1.05;
         }
 
         Ok(())
