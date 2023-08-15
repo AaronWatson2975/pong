@@ -1,4 +1,4 @@
-use tetra::graphics::text::Text;
+use tetra::graphics::text::{Text, Font};
 use tetra::graphics::{self, Color, Rectangle, Texture};
 use tetra::input::{self, Key};
 use tetra::math::Vec2;
@@ -20,10 +20,11 @@ use tetra::{Context, ContextBuilder, State};
  * 
  */
 
+const PADDING: f32 = 32.0;
 const BALL_SPEED: f32 = 5.0;
 const PADDLE_SPEED: f32 = 8.0;
-const WINDOW_WIDTH: f32 = 640.0;
-const WINDOW_HEIGHT: f32 = 480.0;
+const WINDOW_WIDTH: f32 = 1600.0;
+const WINDOW_HEIGHT: f32 = 900.0;
 
 fn main() -> tetra::Result {
     ContextBuilder::new("Pong", WINDOW_WIDTH as i32, WINDOW_HEIGHT as i32)
@@ -36,6 +37,7 @@ struct GameState {
     player1: Entity,
     player2: Entity,
     ball: Entity,
+    background: Texture,
 }
 
 struct Entity {
@@ -85,19 +87,22 @@ impl GameState {
 
         let player1_texture = Texture::new(ctx, "./src/resources/player1.png")?;
         let player1_position = 
-            Vec2::new(16.0, (WINDOW_HEIGHT - player1_texture.height() as f32) / 2.0);
+            Vec2::new(PADDING, (WINDOW_HEIGHT - player1_texture.height() as f32) / 2.0);
 
         let player2_texture = Texture::new(ctx, "./src/resources/player2.png")?;
         let player2_position = 
-            Vec2::new((WINDOW_WIDTH - player2_texture.width() as f32 - 16.0) as f32, (WINDOW_HEIGHT - player2_texture.height() as f32) / 2.0);
+            Vec2::new((WINDOW_WIDTH - player2_texture.width() as f32 - PADDING) as f32, (WINDOW_HEIGHT - player2_texture.height() as f32) / 2.0);
         
 
         let ball_velocity = Vec2::new(-BALL_SPEED, 0.0);
+
+        let background = Texture::new(ctx, "./src/resources/bg.png")?;
 
         Ok(GameState {
             player1: Entity::new(player1_texture, player1_position),
             player2: Entity::new(player2_texture, player2_position),
             ball: Entity::with_velocity(ball_texture, ball_position, ball_velocity),
+            background,
          })
     }
 }
@@ -144,8 +149,10 @@ impl State for GameState {
     }
 
     fn draw(&mut self, ctx: &mut Context) -> tetra::Result {
+        // let font = Font::new(ctx, "./src/resources/tron.ttf")?;
+        // let text = Text::new("Hello, world!", font);
         graphics::clear(ctx, Color::rgb(0.392, 0.584, 0.929));
-
+        self.background.draw(ctx, Vec2::zero());
         self.player1.texture.draw(ctx, self.player1.position);
         self.player2.texture.draw(ctx, self.player2.position);
         self.ball.texture.draw(ctx, self.ball.position);
