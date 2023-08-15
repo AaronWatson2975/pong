@@ -13,6 +13,10 @@ impl Entity {
         self.texture.width() as f32
     }
 
+    pub fn centre(&self) -> Vec2<f32> {
+        Vec2::new(self.position.x + self.width() / 2.0, self.position.y + self.height() / 2.0)
+    }
+
     pub fn height(&self) -> f32 {
         self.texture.height() as f32
     }

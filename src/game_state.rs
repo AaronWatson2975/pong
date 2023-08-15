@@ -5,7 +5,15 @@ use tetra::graphics::{ self, Texture, Color };
 use tetra::State;
 use tetra::math::Vec2;
 use crate::entity::Entity;
-use crate::constants::{ PADDLE_SPEED, WINDOW_WIDTH, WINDOW_HEIGHT, PADDING, BALL_SPEED };
+use crate::constants::{
+    BALL_ACC,
+    BALL_SPEED,
+    PADDING,
+    PADDLE_SPEED,
+    PADDLE_SPIN,
+    WINDOW_WIDTH,
+    WINDOW_HEIGHT,
+};
 
 pub struct GameState {
     player1: Entity,
@@ -91,9 +99,37 @@ impl State for GameState {
             None
         };
 
-        if paddle_hit.is_some() {
-            self.ball.velocity.x = -self.ball.velocity.x;
-            self.ball.velocity *= 1.05;
+        if let Some(paddle) = paddle_hit {
+            self.ball.velocity.x = -(
+                self.ball.velocity.x +
+                BALL_ACC * self.ball.velocity.x.signum()
+            );
+
+            let offset = (paddle.centre().y - self.ball.centre().y) / paddle.height();
+            self.ball.velocity.y += PADDLE_SPIN * -offset;
+        }
+
+        if
+            self.ball.bounds().top() < PADDING ||
+            self.ball.bounds().bottom() > WINDOW_HEIGHT - PADDING
+        {
+            self.ball.velocity.y = -self.ball.velocity.y;
+        }
+
+        if self.ball.bounds().left() < -WINDOW_WIDTH / 2.0 {
+            self.player2.score += 1;
+            self.ball.position = Vec2::new(
+                WINDOW_WIDTH / 2.0 - (self.ball.texture.width() as f32) / 2.0,
+                WINDOW_HEIGHT / 2.0 - (self.ball.texture.height() as f32) / 2.0
+            );
+            self.ball.velocity = Vec2::new(BALL_SPEED, 0.0);
+        } else if self.ball.bounds().right() > WINDOW_WIDTH * 1.5 {
+            self.player1.score += 1;
+            self.ball.position = Vec2::new(
+                WINDOW_WIDTH / 2.0 - (self.ball.texture.width() as f32) / 2.0,
+                WINDOW_HEIGHT / 2.0 - (self.ball.texture.height() as f32) / 2.0
+            );
+            self.ball.velocity = Vec2::new(-BALL_SPEED, 0.0);
         }
 
         Ok(())
